@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบประเมินคัดกรอง SMI V SCAN</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 80px;
+            display: block;
+            margin: 0 auto;
+        }
+        .header h3 {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            display: block;
+            margin: auto;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-option {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid #ccc;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-option.selected {
+            background-color: #A5D6A7;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- โลโก้และชื่อศูนย์ -->
+        <div class="header">
+            <img src="logo.png" alt="Logo">
+            <h3>ศูนย์บริการสาธารณสุขที่ 8 บางเขน</h3>
+        </div>
+
+        <h1>แบบประเมินความเสี่ยงก่อความรุนแรง (SMI V SCAN)</h1>
+
+        <!-- ข้อมูลส่วนตัว -->
+        <div class="input-group">
+            <label for="name">ชื่อ-นามสกุล:</label>
+            <input type="text" id="name" placeholder="กรุณากรอกชื่อ-นามสกุล">
+        </div>
+
+        <div class="input-group">
+            <label for="phone">เบอร์โทรติดต่อ:</label>
+            <input type="text" id="phone" placeholder="กรุณากรอกเบอร์โทร">
+        </div>
+
+         <div class="input-group">
+            <label for="phone">เลขที่บัตรประชาชน:</label>
+            <input type="text" id="idcard" placeholder="กรุณากรอกเบอร์โทร">
+        </div>
+
+        <!-- คำถาม -->
+        <div id="questions"></div>
+
+        <button onclick="calculateRisk()">คำนวณความเสี่ยง</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>    
+        let questionsData = [
+        { text: "ไม่หลับไม่นอน นอนหลับยาก ไม่อยากนอน ตื่นกลางดึกมาทำพฤติกรรมแปลกๆ", options: ["มี", "ไม่มี"], scores: [1, 0], key: "age" },
+        { text: "เดินไป เดินมา เดินเรื่อยเปื่อย เดินไปเรื่อย ๆ แบบไม่มีจุดหมาย เดินไปก่อกวนผู้อื่น", options: ["มี", "ไม่มี"], scores: [1, 0], key: "gender" },
+        { text: "พูดจาคนเดียว พูดตนเดียวในลักษณะเหมือนได้ตอบคู่สนทนาในจินตนาการ พูดไปเรื่อยเปื่อยไม่สัมพันธ์กับบทสนทนา พูดปน", options: ["มี", "ไม่มี"], scores: [1, 0], key: "weight" },
+        { text: "หงุดหงิด ฉุนเฉียว ทำร้ายตนเอง พูดจาข่มขู่จทำร้ายผู้อื่น ด่าคำ รื้อหรือขว้างปาสิ่งขอหยาบคาย ตะโกนเสียงดังด้วยความโกรธ ทำตาขวาง ทำร้ายร่างกายผู้อื่นหรือทำท่าทางจะทำร้าย ทำลาย รื้อหรือขว้างปาสิ่งของ", options: ["มี", "ไม่มี"], scores: [1, 0], key: "exercise" },
+        { text: "เที่ยวหวาดระแวง ระแวงว่าคนอื่นจะมาทำร้ายคิดว่ามีคนสะกดรอยตาม มีคนจะมาทำร้ายคิดว่ามีผู้คนถึงตนเอง พกพาหรือสะสมอาวุธ ชอบเก็บตัวอยู่ในห้อง ไม่แสดงออกทางอารมณ์ สีหน้าเรียบเฉย พูจาน้อยลง", options: ["มี", "ไม่มี"], scores: [1, 0], key: "injury" },
+    ];
+
+    let answers = {};
+    let answerTexts = {}; // เก็บตัวเลือกข้อความ
+
+    function createQuestions() {
+        let questionsContainer = document.getElementById('questions');
+        questionsData.forEach((q, index) => {
+            let questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+            questionDiv.innerHTML = `<p>${index + 1}. ${q.text}</p>`;
+
+            let btnGroup = document.createElement('div');
+            btnGroup.classList.add('btn-group');
+
+            q.options.forEach((option, idx) => {
+                let btn = document.createElement('div');
+                btn.classList.add('btn-option');
+                btn.innerText = option;
+                btn.onclick = function() {
+                    selectAnswer(btn, q.key, option, q.scores[idx]); // เก็บทั้งข้อความและคะแนน
+                };
+                btnGroup.appendChild(btn);
+            });
+
+            questionDiv.appendChild(btnGroup);
+            questionsContainer.appendChild(questionDiv);
+        });
+    }
+
+    function selectAnswer(element, question, text, score) {
+        let siblings = element.parentElement.children;
+        for (let btn of siblings) {
+            btn.classList.remove('selected');
+        }
+        element.classList.add('selected');
+        answers[question] = score; // เก็บค่าคะแนน
+        answerTexts[question] = text; // เก็บข้อความที่เลือก
+    }
+
+    function calculateRisk() {
+        let totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
+        let riskLevel = totalScore <= 0 ? "มีความเสี่ยง" :
+                totalScore <= 1 ? "มีความเสี่ยง" :
+                totalScore <= 2 ? "มีความเสี่ยง" : "มีความเสี่ยง";
+
+        let recommendationText = riskLevel === "มีความเสี่ยง" ? "" :
+                                 riskLevel === "มีความเสี่ยง" ? "" :
+                                 riskLevel === "มีความเสี่ยง" ? "" :
+                                 "";
+
+        // แสดงผลโดยไม่รวมช้อยส์คำตอบ
+        document.getElementById('result').innerHTML = `
+            <p>คะแนนรวม: ${totalScore}</p>
+            <p>ระดับความเสี่ยง: ${riskLevel}</p>
+            <p>${recommendationText}</p>
+        `;
+
+        sendToGoogleSheet(totalScore, riskLevel, recommendationText);
+    }
+
+    function sendToGoogleSheet(totalScore, riskLevel, recommendationText) {
+        let name = document.getElementById('name').value;
+        let phone = document.getElementById('phone').value;
+        let idcard = document.getElementById('idcard').value;
+
+        fetch("https://script.google.com/macros/s/AKfycbx6HKnuewueG1e-tTV6Ct3Qy-mU8gA2IMW1Uj0U9jyHOAeMyAMhOFFXvRGZd49287zs/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name, 
+                phone,
+                idcard,
+                ...answerTexts, // บันทึกตัวเลือกที่เป็นข้อความ
+                totalScore, 
+                riskLevel, 
+                recommendation: recommendationText
+            }),
+            mode: "no-cors"
+        })
+        .then(() => console.log("Data sent successfully"))
+        .catch(error => console.error("Error:", error));
+    }
+
+    createQuestions();
+</script>
+
+</body>
+</html>
