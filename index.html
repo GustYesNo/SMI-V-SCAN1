@@ -208,14 +208,14 @@
                                  "";
 
         // แสดงผลโดยไม่รวมช้อยส์คำตอบ
-        document.getElementById('result').innerHTML = `
-            <p>คะแนนรวม: ${totalScore}</p>
-            <p>ระดับความเสี่ยง: ${riskLevel}</p>
-            <p>${recommendationText}</p>
-        `;
+    document.getElementById('result').innerHTML = `
+        <p>คะแนนรวม: ${totalScore}</p>
+        <p class="${riskClass}">ระดับความเสี่ยง: ${riskLevel}</p>
+        <p>${recommendationText}</p>
+    `;
 
-        sendToGoogleSheet(totalScore, riskLevel, recommendationText);
-    }
+    sendToGoogleSheet(totalScore, riskLevel, recommendationText);
+}
 
     function sendToGoogleSheet(totalScore, riskLevel, recommendationText) {
         let name = document.getElementById('name').value;
