@@ -178,11 +178,11 @@
 
     function calculateRisk() {
         let totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
-        let riskLevel = totalScore <= 0 ? "มีความเสี่ยง" :
+        let riskLevel = totalScore <= 0 ? "ไม่มีความเสี่ยง" :
                 totalScore <= 1 ? "มีความเสี่ยง" :
                 totalScore <= 2 ? "มีความเสี่ยง" : "มีความเสี่ยง";
 
-        let recommendationText = riskLevel === "มีความเสี่ยง" ? "" :
+        let recommendationText = riskLevel === "ไม่มีความเสี่ยง" ? "" :
                                  riskLevel === "มีความเสี่ยง" ? "" :
                                  riskLevel === "มีความเสี่ยง" ? "" :
                                  "";
