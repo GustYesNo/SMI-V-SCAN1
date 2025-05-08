@@ -117,8 +117,8 @@
         </div>
 
          <div class="input-group">
-            <label for="idcard">เลขที่บัตรประชาชน(ถ้ามี)</label>
-            <input type="text" id="idcard" placeholder="กรุณากรอกเลขที่บัตรประชาชน">
+            <label for="card">เลขที่บัตรประชาชน(ถ้ามี)</label>
+            <input type="text" id="card" placeholder="กรุณากรอกเลขที่บัตรประชาชน">
         </div>
 
         <!-- คำถาม -->
@@ -200,7 +200,7 @@
     function sendToGoogleSheet(totalScore, riskLevel, recommendationText) {
         let name = document.getElementById('name').value;
         let phone = document.getElementById('phone').value;
-        let idcard = document.getElementById('idcard').value;
+        let card = document.getElementById('card').value;
 
         fetch("https://script.google.com/macros/s/AKfycbx6HKnuewueG1e-tTV6Ct3Qy-mU8gA2IMW1Uj0U9jyHOAeMyAMhOFFXvRGZd49287zs/exec", {
             method: "POST",
@@ -208,7 +208,7 @@
             body: JSON.stringify({
                 name, 
                 phone,
-                idcard,
+                card,
                 ...answerTexts, // บันทึกตัวเลือกที่เป็นข้อความ
                 totalScore, 
                 riskLevel, 
