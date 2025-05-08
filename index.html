@@ -185,12 +185,23 @@
     }
 
     function calculateRisk() {
-        let totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
-        let riskClass = "";
-        let riskLevel = totalScore <= 0 ? "ไม่มีความเสี่ยง" riskClass = "risk-none"; :
-                totalScore <= 1 ? "มีความเสี่ยง" :
-                totalScore <= 2 ? "มีความเสี่ยง" : "มีความเสี่ยง";
+         let totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
+    let riskLevel = "";
+    let riskClass = "";
 
+    if (totalScore <= 0) {
+        riskLevel = "ไม่มีความเสี่ยง";
+        riskClass = "risk-none";
+    } else if (totalScore <= 1) {
+        riskLevel = "มีความเสี่ยง";
+        riskClass = "risk-high";
+    } else if (totalScore <= 2) {
+        riskLevel = "มีความเสี่ยง";
+        riskClass = "risk-high";
+    } else {
+        riskLevel = "มีความเสี่ยง";
+        riskClass = "risk-high";
+    }
         let recommendationText = riskLevel === "ไม่มีความเสี่ยง" ? "" :
                                  riskLevel === "มีความเสี่ยง" ? "" :
                                  riskLevel === "มีความเสี่ยง" ? "" :
